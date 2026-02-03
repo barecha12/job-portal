@@ -40,6 +40,29 @@ export default function Sidebar() {
             <Link to="/profile" className={location.pathname === '/profile' ? 'active' : ''}>
                 <span>👤</span> <span className="nav-text">{t('nav.profile')}</span>
             </Link>
+            {role === 'admin' && (
+                <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ padding: '0 1.5rem 0.5rem', fontSize: '0.75rem', fontWeight: '800', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('nav.administrative')}</div>
+                    <Link to="/admin" className={location.pathname === '/admin' ? 'active' : ''}>
+                        <span>🛰️</span> <span className="nav-text">{t('nav.command_center')}</span>
+                    </Link>
+                    <Link to="/admin/users" className={location.pathname === '/admin/users' ? 'active' : ''}>
+                        <span>📋</span> <span className="nav-text">{t('nav.directory')}</span>
+                    </Link>
+                    <Link to="/admin/management/companies" className={location.pathname === '/admin/management/companies' ? 'active' : ''}>
+                        <span>🏢</span> <span className="nav-text">{t('nav.entities')}</span>
+                    </Link>
+                    <Link to="/admin/management/jobs" className={location.pathname === '/admin/management/jobs' ? 'active' : ''}>
+                        <span>🌐</span> <span className="nav-text">{t('nav.marketplace')}</span>
+                    </Link>
+                    <Link to="/admin/management/applications" className={location.pathname === '/admin/management/applications' ? 'active' : ''}>
+                        <span>🛠️</span> <span className="nav-text">{t('nav.moderation')}</span>
+                    </Link>
+                    <Link to="/admin/activities" className={location.pathname === '/admin/activities' ? 'active' : ''}>
+                        <span>📜</span> <span className="nav-text">{t('nav.audit_trail')}</span>
+                    </Link>
+                </div>
+            )}
         </aside>
     )
 }

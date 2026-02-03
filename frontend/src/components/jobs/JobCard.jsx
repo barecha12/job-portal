@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function JobCard({ job }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     return (
@@ -20,7 +22,7 @@ export default function JobCard({ job }) {
                 <div>
                     <h3 style={{ fontSize: '1.2rem', marginBottom: '5px' }}>{job.title}</h3>
                     <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                        <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{job.company?.name}</span> • {job.type}
+                        <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{job.company?.name}</span> • {t(`jobs.${job.type.toLowerCase().replace('-', '_')}`) || job.type}
                     </div>
                 </div>
             </div>
@@ -28,7 +30,7 @@ export default function JobCard({ job }) {
                 <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
                     <span style={{ marginRight: '5px' }}>📍</span> {job.location}
                 </div>
-                <button className="btn" style={{ padding: '10px 30px', fontSize: '0.9rem', borderRadius: '50px', boxShadow: 'none' }}>Apply</button>
+                <button className="btn" style={{ padding: '10px 30px', fontSize: '0.9rem', borderRadius: '50px', boxShadow: 'none' }}>{t('jobs.apply_now')}</button>
             </div>
         </div>
     )

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../services/axios-client";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function MyCompanies() {
+    const { t } = useTranslation();
     const [companies, setCompanies] = useState([]);
     const [meta, setMeta] = useState({});
     const [loading, setLoading] = useState(false);
@@ -35,7 +37,7 @@ export default function MyCompanies() {
     }
 
     const onDelete = (c) => {
-        if (!window.confirm("Are you sure you want to delete this company?")) {
+        if (!window.confirm(t('companies.delete_confirm'))) {
             return
         }
         axiosClient.delete(`/companies/${c.id}`)
@@ -47,24 +49,24 @@ export default function MyCompanies() {
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1>My Companies</h1>
-                <Link className="btn-add" to="/companies/new">Add new</Link>
+                <h1>{t('companies.title')}</h1>
+                <Link className="btn-add" to="/companies/new">{t('companies.add_new')}</Link>
             </div>
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Website</th>
-                            <th>Actions</th>
+                            <th>{t('common.id')}</th>
+                            <th>{t('companies.name')}</th>
+                            <th>{t('companies.website')}</th>
+                            <th>{t('companies.actions')}</th>
                         </tr>
                     </thead>
                     {loading &&
                         <tbody>
                             <tr>
                                 <td colSpan="5" className="text-center">
-                                    Loading...
+                                    {t('companies.loading')}
                                 </td>
                             </tr>
                         </tbody>
@@ -77,11 +79,11 @@ export default function MyCompanies() {
                                     <td>{c.name}</td>
                                     <td>{c.website}</td>
                                     <td>
-                                        <Link className="btn-edit" style={{ background: 'var(--primary-color)', color: '#0f172a' }} to={'/companies/' + c.id}>View</Link>
+                                        <Link className="btn-edit" style={{ background: 'var(--primary-color)', color: '#0f172a' }} to={'/companies/' + c.id}>{t('companies.view')}</Link>
                                         &nbsp;
-                                        <Link className="btn-edit" to={'/companies/' + c.id + '/edit'}>Edit</Link>
+                                        <Link className="btn-edit" to={'/companies/' + c.id + '/edit'}>{t('companies.edit')}</Link>
                                         &nbsp;
-                                        <button onClick={ev => onDelete(c)} className="btn-delete">Delete</button>
+                                        <button onClick={ev => onDelete(c)} className="btn-delete">{t('companies.delete')}</button>
                                     </td>
                                 </tr>
                             ))}

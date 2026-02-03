@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../services/axios-client";
+import { useTranslation } from "react-i18next";
 
 export default function EmployerApplications() {
+    const { t } = useTranslation();
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -22,7 +24,7 @@ export default function EmployerApplications() {
     }
 
     const updateStatus = (app, status) => {
-        if (!window.confirm(`Are you sure you want to ${status} this application?`)) {
+        if (!window.confirm(t('employer_applications.update_confirm', { status: t(`candidate_applications.status_${status}`) || status }))) {
             return
         }
         axiosClient.put(`/applications/${app.id}`, { status })
@@ -31,7 +33,7 @@ export default function EmployerApplications() {
             })
             .catch(err => {
                 console.error(err)
-                alert("Failed to update status")
+                alert(t('employer_applications.update_failed'))
             })
     }
 
@@ -51,16 +53,16 @@ export default function EmployerApplications() {
     return (
         <div className="animated fadeInDown">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                <h1 style={{ margin: 0 }}>Manage Applications</h1>
+                <h1 style={{ margin: 0 }}>{t('employer_applications.title')}</h1>
                 <div style={{ background: 'white', padding: '8px 16px', borderRadius: '12px', boxShadow: 'var(--shadow-sm)', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                    Total: <strong>{applications.length}</strong> candidates
+                    {t('employer_applications.total_candidates', { count: applications.length })}
                 </div>
             </div>
 
             {loading ? (
                 <div className="text-center" style={{ padding: '60px' }}>
                     <div className="animate-pulse-glow" style={{ width: '40px', height: '40px', background: 'var(--primary-color)', borderRadius: '50%', margin: '0 auto' }}></div>
-                    <p style={{ marginTop: '15px', color: 'var(--text-secondary)' }}>Gathering applications...</p>
+                    <p style={{ marginTop: '15px', color: 'var(--text-secondary)' }}>{t('employer_applications.gathering')}</p>
                 </div>
             ) : (
                 <div style={{ display: 'grid', gap: '20px' }}>
@@ -89,10 +91,10 @@ export default function EmployerApplications() {
                                             <p style={{ margin: '0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{app.user?.email}</p>
                                             <div style={{ marginTop: '15px', display: 'flex', gap: '10px', alignItems: 'center' }}>
                                                 <span className={`status-${app.status}`} style={{ ...getStatusStyle(app.status), padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }}>
-                                                    {app.status}
+                                                    {t(`candidate_applications.status_${app.status}`) || app.status}
                                                 </span>
                                                 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                                                    📅 Applied {new Date(app.created_at).toLocaleDateString()}
+                                                    📅 {t('employer_applications.applied_on', { date: new Date(app.created_at).toLocaleDateString() })}
                                                 </span>
                                             </div>
                                         </div>
@@ -101,7 +103,7 @@ export default function EmployerApplications() {
 
                                 {/* Middle Section: Job Info */}
                                 <div style={{ flex: '1', minWidth: '300px', padding: '30px', background: '#f8fafc' }}>
-                                    <label style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', display: 'block', marginBottom: '10px' }}>Target Job</label>
+                                    <label style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-muted)', display: 'block', marginBottom: '10px' }}>{t('employer_applications.target_job')}</label>
                                     <h4 style={{ margin: '0 0 5px 0', fontSize: '1.1rem' }}>{app.job?.title}</h4>
                                     <p style={{ margin: '0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>📍 {app.job?.location}</p>
 
@@ -112,10 +114,10 @@ export default function EmployerApplications() {
                                                 rel="noopener noreferrer"
                                                 className="btn-edit"
                                                 style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', borderRadius: '10px', fontSize: '0.9rem' }}>
-                                                <span>📄</span> View Resume
+                                                <span>📄</span> {t('employer_applications.view_resume')}
                                             </a>
                                         ) : (
-                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem italic' }}>No resume attached</span>
+                                            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem italic' }}>{t('employer_applications.no_resume')}</span>
                                         )}
                                     </div>
                                 </div>
@@ -124,42 +126,42 @@ export default function EmployerApplications() {
                                 <div style={{ width: '300px', padding: '30px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px' }}>
                                     {(app.status === 'pending' || app.status === 'applied') && (
                                         <button onClick={() => updateStatus(app, 'shortlisted')} className="btn" style={{ borderRadius: '10px', background: 'var(--secondary-color)' }}>
-                                            🎯 Shortlist
+                                            🎯 {t('employer_applications.shortlist')}
                                         </button>
                                     )}
                                     {app.status === 'shortlisted' && (
                                         <button onClick={() => updateStatus(app, 'interview_scheduled')} className="btn" style={{ borderRadius: '10px' }}>
-                                            📅 Schedule Interview
+                                            📅 {t('employer_applications.schedule_interview')}
                                         </button>
                                     )}
                                     {app.status === 'interview_scheduled' && (
                                         <button onClick={() => updateStatus(app, 'interviewed')} className="btn" style={{ borderRadius: '10px' }}>
-                                            🤝 Mark as Interviewed
+                                            🤝 {t('employer_applications.mark_interviewed')}
                                         </button>
                                     )}
                                     {app.status === 'interviewed' && (
                                         <>
                                             <button onClick={() => updateStatus(app, 'hired')} className="btn" style={{ borderRadius: '10px', background: 'var(--success-color)', border: 'none', color: 'white' }}>
-                                                ✅ Hire Candidate
+                                                ✅ {t('employer_applications.hire')}
                                             </button>
                                             <button onClick={() => updateStatus(app, 'failed')} className="btn-logout" style={{ borderRadius: '10px', background: 'white', border: '1px solid #fee2e2' }}>
-                                                ❌ Not Passed
+                                                ❌ {t('employer_applications.not_passed')}
                                             </button>
                                         </>
                                     )}
                                     {(app.status === 'pending' || app.status === 'applied' || app.status === 'shortlisted') && (
                                         <button onClick={() => updateStatus(app, 'rejected')} className="btn-logout" style={{ borderRadius: '10px', background: 'white', border: '1px solid #fee2e2' }}>
-                                            🚫 Reject
+                                            🚫 {t('employer_applications.reject')}
                                         </button>
                                     )}
                                     {app.status === 'hired' && (
                                         <div style={{ textAlign: 'center', color: 'var(--success-color)', fontWeight: '700' }}>
-                                            🎊 Candidate Hired!
+                                            🎊 {t('employer_applications.hired_msg')}
                                         </div>
                                     )}
                                     {app.status === 'rejected' && (
                                         <div style={{ textAlign: 'center', color: 'var(--error-color)', fontWeight: '700' }}>
-                                            Candidate Rejected
+                                            {t('employer_applications.rejected_msg')}
                                         </div>
                                     )}
                                 </div>
@@ -170,8 +172,8 @@ export default function EmployerApplications() {
                     {applications.length === 0 && (
                         <div className="card text-center" style={{ padding: '80px' }}>
                             <div style={{ fontSize: '4rem', marginBottom: '20px' }}>📁</div>
-                            <h2 style={{ color: 'var(--text-secondary)' }}>No applications yet</h2>
-                            <p style={{ color: 'var(--text-muted)' }}>When candidates apply to your jobs, they'll appear here.</p>
+                            <h2 style={{ color: 'var(--text-secondary)' }}>{t('employer_applications.no_applications')}</h2>
+                            <p style={{ color: 'var(--text-muted)' }}>{t('employer_applications.no_applications_desc')}</p>
                         </div>
                     )}
                 </div>

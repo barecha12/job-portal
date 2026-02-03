@@ -6,8 +6,10 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { t } = useTranslation();
   const socials = [
     { name: "Facebook", icon: <FaFacebookF />, color: "#1877F2", link: "https://facebook.com" },
     { name: "Twitter", icon: <FaTwitter />, color: "#1DA1F2", link: "https://twitter.com" },
@@ -56,8 +58,7 @@ export default function Footer() {
                 opacity: 0.9,
               }}
             >
-              Hojio connects driven professionals with trusted employers using a
-              refined and transparent hiring experience.
+              {t('footer.about_text')}
             </p>
 
             {/* SOCIALS */}
@@ -69,25 +70,25 @@ export default function Footer() {
           </div>
 
           {/* COLUMNS */}
-          <FooterColumn title="Job Seekers">
-            <FooterLink to="/jobs" text="Find Jobs" />
-            <FooterLink to="/companies" text="Companies" />
-            <FooterLink to="/signup" text="Create Profile" />
-            <FooterLink to="#" text="Career Resources" />
+          <FooterColumn title={t('footer.job_seekers')}>
+            <FooterLink to="/jobs" text={t('nav.jobs')} />
+            <FooterLink to="/companies" text={t('footer.companies')} />
+            <FooterLink to="/signup" text={t('footer.create_profile')} />
+            <FooterLink to="#" text={t('footer.career_resources')} />
           </FooterColumn>
 
-          <FooterColumn title="Employers">
-            <FooterLink to="/signup" text="Post a Job" />
-            <FooterLink to="#" text="Browse Candidates" />
-            <FooterLink to="#" text="Pricing & Plans" />
-            <FooterLink to="#" text="Recruitment Solutions" />
+          <FooterColumn title={t('footer.employers')}>
+            <FooterLink to="/signup" text={t('nav.post_job')} />
+            <FooterLink to="#" text={t('footer.browse_candidates')} />
+            <FooterLink to="#" text={t('footer.pricing_plans')} />
+            <FooterLink to="#" text={t('footer.recruitment_solutions')} />
           </FooterColumn>
 
-          <FooterColumn title="Company">
-            <FooterLink to="#about" text="About Us" />
-            <FooterLink to="#contact" text="Contact" />
-            <FooterLink to="#" text="Help Center" />
-            <FooterLink to="#" text="Careers" />
+          <FooterColumn title={t('footer.companies') || 'Company'}>
+            <FooterLink to="#about" text={t('footer.about_us')} />
+            <FooterLink to="#contact" text={t('nav.contact')} />
+            <FooterLink to="#" text={t('footer.help_center')} />
+            <FooterLink to="#" text={t('footer.careers')} />
           </FooterColumn>
         </div>
 
@@ -104,12 +105,12 @@ export default function Footer() {
             opacity: 0.9,
           }}
         >
-          <span>© 2026 Hojio Job Portal. All rights reserved.</span>
+          <span>{t('footer.copyright')}</span>
 
           <div style={{ display: "flex", gap: "22px" }}>
-            <a href="#" style={bottomLink}>Privacy Policy</a>
-            <a href="#" style={bottomLink}>Terms of Service</a>
-            <a href="#" style={bottomLink}>Cookies</a>
+            <a href="#" style={bottomLink}>{t('footer.privacy')}</a>
+            <a href="#" style={bottomLink}>{t('footer.terms')}</a>
+            <a href="#" style={bottomLink}>{t('footer.cookies')}</a>
           </div>
         </div>
       </div>

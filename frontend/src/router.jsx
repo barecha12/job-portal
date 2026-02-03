@@ -14,6 +14,13 @@ import LandingPage from "./pages/landing/LandingPage";
 import Profile from "./pages/profile/Profile";
 import CompanyDetails from "./pages/employer/CompanyDetails";
 import JobForm from "./pages/jobs/JobForm";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import UserManagement from "./pages/admin/UserManagement";
+import JobManagement from "./pages/admin/JobManagement";
+import CompanyManagement from "./pages/admin/CompanyManagement";
+import ApplicationManagement from "./pages/admin/ApplicationManagement";
+import ActivityLogs from "./pages/admin/ActivityLogs";
+import MaintenanceMode from "./pages/MaintenanceMode";
 import { useAuth } from "./contexts/AuthContext";
 
 /**
@@ -49,6 +56,10 @@ const router = createBrowserRouter([
             {
                 path: '/signup',
                 element: <Signup />
+            },
+            {
+                path: '/maintenance',
+                element: <MaintenanceMode />
             }
         ]
     },
@@ -124,12 +135,60 @@ const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
-            // Seeker Only Routes
             {
                 path: '/my-applications',
                 element: (
                     <ProtectedRoute allowedRole="seeker">
                         <MyApplications />
+                    </ProtectedRoute>
+                )
+            },
+            // Admin Routes
+            {
+                path: '/admin',
+                element: (
+                    <ProtectedRoute allowedRole="admin">
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: '/admin/users',
+                element: (
+                    <ProtectedRoute allowedRole="admin">
+                        <UserManagement />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: '/admin/management/jobs',
+                element: (
+                    <ProtectedRoute allowedRole="admin">
+                        <JobManagement />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: '/admin/management/companies',
+                element: (
+                    <ProtectedRoute allowedRole="admin">
+                        <CompanyManagement />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: '/admin/management/applications',
+                element: (
+                    <ProtectedRoute allowedRole="admin">
+                        <ApplicationManagement />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: '/admin/activities',
+                element: (
+                    <ProtectedRoute allowedRole="admin">
+                        <ActivityLogs />
                     </ProtectedRoute>
                 )
             },

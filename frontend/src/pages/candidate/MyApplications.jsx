@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../services/axios-client";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function MyApplications() {
+    const { t } = useTranslation();
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -23,7 +25,7 @@ export default function MyApplications() {
     }
 
     const onDelete = (app) => {
-        if (!window.confirm("Are you sure you want to withdraw this application?")) {
+        if (!window.confirm(t('candidate_applications.withdraw_confirm'))) {
             return
         }
         axiosClient.delete(`/applications/${app.id}`)
@@ -45,22 +47,22 @@ export default function MyApplications() {
     }
 
     const getStatusText = (status) => {
-        return status.replace('_', ' ').charAt(0).toUpperCase() + status.slice(1).replace('_', ' ');
+        return t(`candidate_applications.status_${status}`) || status.replace('_', ' ').charAt(0).toUpperCase() + status.slice(1).replace('_', ' ');
     }
 
     return (
         <div className="animated fadeInDown">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                <h1 style={{ margin: 0 }}>My Job Applications</h1>
+                <h1 style={{ margin: 0 }}>{t('candidate_applications.title')}</h1>
                 <div style={{ background: 'white', padding: '8px 16px', borderRadius: '12px', boxShadow: 'var(--shadow-sm)', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                    Active Applications: <strong>{applications.length}</strong>
+                    {t('candidate_applications.active_count', { count: applications.length })}
                 </div>
             </div>
 
             {loading ? (
                 <div className="text-center" style={{ padding: '60px' }}>
                     <div className="animate-pulse-glow" style={{ width: '40px', height: '40px', background: 'var(--primary-color)', borderRadius: '50%', margin: '0 auto' }}></div>
-                    <p style={{ marginTop: '15px' }}>Loading your journey...</p>
+                    <p style={{ marginTop: '15px' }}>{t('candidate_applications.loading')}</p>
                 </div>
             ) : (
                 <div style={{ display: 'grid', gap: '20px' }}>
@@ -95,18 +97,18 @@ export default function MyApplications() {
 
                                     <div style={{ marginTop: '20px', display: 'flex', gap: '20px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                                         <span>📍 {app.job.location}</span>
-                                        <span>📅 Applied on {new Date(app.created_at).toLocaleDateString()}</span>
+                                        <span>📅 {t('candidate_applications.applied_on', { date: new Date(app.created_at).toLocaleDateString() })}</span>
                                     </div>
                                 </div>
 
                                 {/* Actions */}
                                 <div style={{ padding: '25px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <Link to={`/jobs/${app.job.id}`} className="btn-edit" style={{ textDecoration: 'none', padding: '10px 20px', borderRadius: '8px' }}>
-                                        View Job
+                                        {t('candidate_applications.view_job')}
                                     </Link>
                                     {(app.status === 'applied' || app.status === 'pending') && (
                                         <button onClick={() => onDelete(app)} className="btn-delete" style={{ padding: '10px 20px', borderRadius: '8px' }}>
-                                            Withdraw
+                                            {t('candidate_applications.withdraw')}
                                         </button>
                                     )}
                                 </div>
@@ -117,9 +119,9 @@ export default function MyApplications() {
                     {applications.length === 0 && (
                         <div className="card text-center" style={{ padding: '80px' }}>
                             <div style={{ fontSize: '4rem', marginBottom: '20px' }}>🚀</div>
-                            <h2 style={{ color: 'var(--text-secondary)' }}>No applications yet</h2>
-                            <p style={{ color: 'var(--text-muted)' }}>Start your journey by searching and applying to jobs!</p>
-                            <Link to="/jobs" className="btn" style={{ display: 'inline-block', marginTop: '20px' }}>Browse Jobs</Link>
+                            <h2 style={{ color: 'var(--text-secondary)' }}>{t('candidate_applications.no_applications')}</h2>
+                            <p style={{ color: 'var(--text-muted)' }}>{t('candidate_applications.no_applications_desc')}</p>
+                            <Link to="/jobs" className="btn" style={{ display: 'inline-block', marginTop: '20px' }}>{t('candidate_applications.browse_jobs')}</Link>
                         </div>
                     )}
                 </div>

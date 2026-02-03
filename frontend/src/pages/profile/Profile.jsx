@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../services/axios-client";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export default function Profile() {
+    const { t } = useTranslation();
     const { user, setUser, setToken, setRole, role } = useAuth();
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
@@ -64,7 +66,7 @@ export default function Profile() {
             .then(({ data }) => {
                 setLoading(false);
                 setUser(data.user);
-                setMessage('Profile updated successfully!');
+                setMessage(t('profile.save_success'));
                 window.scrollTo(0, 0);
             })
             .catch(err => {
@@ -135,32 +137,32 @@ export default function Profile() {
                 <div style={cardStyle}>
                     <div style={sectionHeaderStyle}>
                         <div style={iconBadgeStyle}>📝</div>
-                        <h2 style={titleStyle}>Account Settings</h2>
+                        <h2 style={titleStyle}>{t('profile.account_settings')}</h2>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '20px' }}>
                         <div>
-                            <label style={labelStyle}>Full Name</label>
+                            <label style={labelStyle}>{t('profile.full_name')}</label>
                             <input type="text" value={profileData.name} onChange={ev => setProfileData({ ...profileData, name: ev.target.value })} style={inputStyle} />
                         </div>
                         <div>
-                            <label style={labelStyle}>Position</label>
+                            <label style={labelStyle}>{t('profile.position')}</label>
                             <input type="text" value={profileData.title} onChange={ev => setProfileData({ ...profileData, title: ev.target.value })} placeholder="e.g. HR Manager" style={inputStyle} />
                         </div>
                         <div>
-                            <label style={labelStyle}>Email Address</label>
+                            <label style={labelStyle}>{t('profile.email_address')}</label>
                             <input type="email" value={profileData.email} onChange={ev => setProfileData({ ...profileData, email: ev.target.value })} style={inputStyle} />
                         </div>
                         <div>
-                            <label style={labelStyle}>Work Phone</label>
+                            <label style={labelStyle}>{t('profile.work_phone')}</label>
                             <input type="text" value={profileData.phone} onChange={ev => setProfileData({ ...profileData, phone: ev.target.value })} style={inputStyle} />
                         </div>
                     </div>
                     <div style={{ marginBottom: '20px' }}>
-                        <label style={labelStyle}>Department</label>
+                        <label style={labelStyle}>{t('profile.department')}</label>
                         <input type="text" value={profileData.department} onChange={ev => setProfileData({ ...profileData, department: ev.target.value })} style={inputStyle} />
                     </div>
                     <div>
-                        <label style={labelStyle}>Professional Bio</label>
+                        <label style={labelStyle}>{t('profile.professional_bio')}</label>
                         <textarea value={profileData.bio} onChange={ev => setProfileData({ ...profileData, bio: ev.target.value })} rows="5" style={{ ...inputStyle, padding: '14px' }} />
                     </div>
                 </div>
@@ -169,10 +171,10 @@ export default function Profile() {
                 <div style={cardStyle}>
                     <div style={sectionHeaderStyle}>
                         <div style={iconBadgeStyle}>🔗</div>
-                        <h2 style={titleStyle}>Professional Connections</h2>
+                        <h2 style={titleStyle}>{t('profile.professional_connections')}</h2>
                     </div>
                     <div>
-                        <label style={labelStyle}>LinkedIn Profile</label>
+                        <label style={labelStyle}>{t('profile.linkedin_profile')}</label>
                         <input type="text" value={profileData.linkedin_url} onChange={ev => setProfileData({ ...profileData, linkedin_url: ev.target.value })} placeholder="https://linkedin.com/in/..." style={inputStyle} />
                     </div>
                 </div>
@@ -181,14 +183,14 @@ export default function Profile() {
                 <div style={cardStyle}>
                     <div style={sectionHeaderStyle}>
                         <div style={iconBadgeStyle}>ℹ️</div>
-                        <h2 style={titleStyle}>System Information</h2>
+                        <h2 style={titleStyle}>{t('profile.system_information')}</h2>
                     </div>
                     <div style={{ padding: '18px', background: '#f8fafc', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div style={{ fontSize: '2rem' }}>📅</div>
                         <div>
-                            <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '600', textTransform: 'uppercase' }}>Member Since</div>
+                            <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '600', textTransform: 'uppercase' }}>{t('profile.member_since')}</div>
                             <div style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-primary)' }}>
-                                {new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                {new Date(user.created_at).toLocaleDateString(t('i18n.locale') === 'am' ? 'am-ET' : (t('i18n.locale') === 'om' ? 'om-ET' : 'en-US'), { year: 'numeric', month: 'long', day: 'numeric' })}
                             </div>
                         </div>
                     </div>
@@ -196,7 +198,7 @@ export default function Profile() {
 
                 {/* Save Button */}
                 <button className="btn btn-add" disabled={loading} style={{ width: '100%', padding: '16px', fontSize: '1.05rem', fontWeight: 700, borderRadius: '12px' }}>
-                    {loading ? '💾 Saving...' : '✨ Update Settings'}
+                    {loading ? `💾 ${t('profile.saving')}` : `✨ ${t('profile.update_settings')}`}
                 </button>
 
                 {message && (
@@ -215,23 +217,23 @@ export default function Profile() {
                 <div style={cardStyle}>
                     <div style={sectionHeaderStyle}>
                         <div style={iconBadgeStyle}>👤</div>
-                        <h2 style={titleStyle}>Basic Information</h2>
+                        <h2 style={titleStyle}>{t('profile.basic_info')}</h2>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
                         <div>
-                            <label style={labelStyle}>Full Name</label>
+                            <label style={labelStyle}>{t('profile.full_name')}</label>
                             <input type="text" value={profileData.name} onChange={ev => setProfileData({ ...profileData, name: ev.target.value })} style={inputStyle} />
                         </div>
                         <div>
-                            <label style={labelStyle}>Professional Title</label>
+                            <label style={labelStyle}>{t('profile.professional_title')}</label>
                             <input type="text" value={profileData.title} onChange={ev => setProfileData({ ...profileData, title: ev.target.value })} placeholder="e.g. Senior Developer" style={inputStyle} />
                         </div>
                         <div>
-                            <label style={labelStyle}>Email Address</label>
+                            <label style={labelStyle}>{t('profile.email_address')}</label>
                             <input type="email" value={profileData.email} disabled style={{ ...inputStyle, background: '#f1f5f9', cursor: 'not-allowed' }} />
                         </div>
                         <div>
-                            <label style={labelStyle}>Phone Number</label>
+                            <label style={labelStyle}>{t('profile.phone_number')}</label>
                             <input type="text" value={profileData.phone} onChange={ev => setProfileData({ ...profileData, phone: ev.target.value })} style={inputStyle} />
                         </div>
                     </div>
@@ -241,14 +243,14 @@ export default function Profile() {
                 <div style={cardStyle}>
                     <div style={sectionHeaderStyle}>
                         <div style={iconBadgeStyle}>🎯</div>
-                        <h2 style={titleStyle}>Professional Summary</h2>
+                        <h2 style={titleStyle}>{t('profile.professional_summary')}</h2>
                     </div>
                     <div style={{ marginBottom: '20px' }}>
-                        <label style={labelStyle}>About Me</label>
+                        <label style={labelStyle}>{t('profile.about_me')}</label>
                         <textarea value={profileData.bio} onChange={ev => setProfileData({ ...profileData, bio: ev.target.value })} rows="5" placeholder="Tell us about your career journey..." style={{ ...inputStyle, padding: '14px' }} />
                     </div>
                     <div>
-                        <label style={labelStyle}>Core Skills</label>
+                        <label style={labelStyle}>{t('profile.core_skills')}</label>
                         <input type="text" value={profileData.skills} onChange={ev => setProfileData({ ...profileData, skills: ev.target.value })} placeholder="React, Node.js, Python, AWS..." style={inputStyle} />
                     </div>
                 </div>
@@ -258,14 +260,14 @@ export default function Profile() {
                     <div style={cardStyle}>
                         <div style={sectionHeaderStyle}>
                             <div style={iconBadgeStyle}>💼</div>
-                            <h2 style={titleStyle}>Experience</h2>
+                            <h2 style={titleStyle}>{t('profile.experience')}</h2>
                         </div>
                         <textarea value={profileData.experience} onChange={ev => setProfileData({ ...profileData, experience: ev.target.value })} rows="8" placeholder="Describe your professional journey..." style={{ ...inputStyle, padding: '14px' }} />
                     </div>
                     <div style={cardStyle}>
                         <div style={sectionHeaderStyle}>
                             <div style={iconBadgeStyle}>🎓</div>
-                            <h2 style={titleStyle}>Education</h2>
+                            <h2 style={titleStyle}>{t('profile.education')}</h2>
                         </div>
                         <textarea value={profileData.education} onChange={ev => setProfileData({ ...profileData, education: ev.target.value })} rows="8" placeholder="Your academic background..." style={{ ...inputStyle, padding: '14px' }} />
                     </div>
@@ -275,19 +277,19 @@ export default function Profile() {
                 <div style={cardStyle}>
                     <div style={sectionHeaderStyle}>
                         <div style={iconBadgeStyle}>🔗</div>
-                        <h2 style={titleStyle}>Professional Links</h2>
+                        <h2 style={titleStyle}>{t('profile.professional_links')}</h2>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
                         <div>
-                            <label style={labelStyle}>LinkedIn Profile</label>
+                            <label style={labelStyle}>{t('profile.linkedin_profile')}</label>
                             <input type="text" value={profileData.linkedin_url} onChange={ev => setProfileData({ ...profileData, linkedin_url: ev.target.value })} placeholder="https://linkedin.com/in/..." style={inputStyle} />
                         </div>
                         <div>
-                            <label style={labelStyle}>GitHub Profile</label>
+                            <label style={labelStyle}>{t('profile.github_profile')}</label>
                             <input type="text" value={profileData.github_url} onChange={ev => setProfileData({ ...profileData, github_url: ev.target.value })} placeholder="https://github.com/..." style={inputStyle} />
                         </div>
                         <div>
-                            <label style={labelStyle}>Portfolio Website</label>
+                            <label style={labelStyle}>{t('profile.portfolio_website')}</label>
                             <input type="text" value={profileData.portfolio_url} onChange={ev => setProfileData({ ...profileData, portfolio_url: ev.target.value })} placeholder="https://yourportfolio.com" style={inputStyle} />
                         </div>
                     </div>
@@ -297,10 +299,10 @@ export default function Profile() {
                 <div style={cardStyle}>
                     <div style={sectionHeaderStyle}>
                         <div style={iconBadgeStyle}>📄</div>
-                        <h2 style={titleStyle}>Resume / CV</h2>
+                        <h2 style={titleStyle}>{t('profile.resume_cv')}</h2>
                     </div>
                     <div>
-                        <label style={labelStyle}>Upload Your Resume (PDF, DOC, DOCX)</label>
+                        <label style={labelStyle}>{t('profile.upload_resume')} (PDF, DOC, DOCX)</label>
                         <input type="file" onChange={ev => setProfileData({ ...profileData, resume: ev.target.files[0] })} accept=".pdf,.doc,.docx" style={{ ...inputStyle, padding: '14px', cursor: 'pointer' }} />
                         {user.resume_path && (
                             <div style={{ marginTop: '12px', padding: '12px', background: '#f0fdf4', borderRadius: '8px', color: '#166534', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -316,7 +318,63 @@ export default function Profile() {
 
                 {/* Save Button */}
                 <button className="btn btn-add" disabled={loading} style={{ width: '100%', padding: '16px', fontSize: '1.05rem', fontWeight: 700, borderRadius: '12px' }}>
-                    {loading ? '💾 Saving...' : '✨ Save All Changes'}
+                    {loading ? `💾 ${t('profile.saving')}` : `✨ ${t('profile.save_all_changes')}`}
+                </button>
+
+                {message && (
+                    <div style={{ marginTop: '20px', padding: '16px', background: '#d1fae5', borderRadius: '12px', textAlign: 'center', color: '#065f46', fontWeight: '600', border: '1px solid #6ee7b7' }}>
+                        ✅ {message}
+                    </div>
+                )}
+            </div>
+        </form>
+    );
+
+    const renderAdminProfile = () => (
+        <form onSubmit={onSubmit}>
+            <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+                {/* System Identity */}
+                <div style={cardStyle}>
+                    <div style={sectionHeaderStyle}>
+                        <div style={iconBadgeStyle}>🛡️</div>
+                        <h2 style={titleStyle}>{t('profile.admin_identity')}</h2>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '20px' }}>
+                        <div>
+                            <label style={labelStyle}>{t('profile.full_name')}</label>
+                            <input type="text" value={profileData.name} onChange={ev => setProfileData({ ...profileData, name: ev.target.value })} style={inputStyle} />
+                        </div>
+                        <div>
+                            <label style={labelStyle}>{t('profile.official_email')}</label>
+                            <input type="email" value={profileData.email} disabled style={{ ...inputStyle, background: '#f1f5f9', cursor: 'not-allowed' }} />
+                        </div>
+                    </div>
+                    <div style={{ padding: '20px', background: '#fff7ed', borderRadius: '12px', border: '1px solid #ffedd5', color: '#9a3412', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                        <strong>⚠️ {t('profile.admin_protocol')}:</strong> {t('profile.admin_protocol_desc')}
+                    </div>
+                </div>
+
+                {/* Account Details */}
+                <div style={cardStyle}>
+                    <div style={sectionHeaderStyle}>
+                        <div style={iconBadgeStyle}>⚙️</div>
+                        <h2 style={titleStyle}>{t('profile.account_details')}</h2>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+                        <div>
+                            <label style={labelStyle}>{t('profile.staff_id')}</label>
+                            <input type="text" value={profileData.phone} onChange={ev => setProfileData({ ...profileData, phone: ev.target.value })} placeholder="Internal ref or phone" style={inputStyle} />
+                        </div>
+                        <div>
+                            <label style={labelStyle}>{t('profile.department')}</label>
+                            <input type="text" value={profileData.department} onChange={ev => setProfileData({ ...profileData, department: ev.target.value })} placeholder="System Management" style={inputStyle} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Save Button */}
+                <button className="btn btn-add" disabled={loading} style={{ width: '100%', padding: '16px', fontSize: '1.05rem', fontWeight: 700, borderRadius: '12px' }}>
+                    {loading ? `💾 ${t('profile.saving')}` : `🛡️ ${t('profile.commit_profile')}`}
                 </button>
 
                 {message && (
@@ -331,7 +389,7 @@ export default function Profile() {
     return (
         <div className="animated fadeIn">
             <header style={{
-                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+                background: role === 'admin' ? 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)' : 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
                 padding: '40px 35px',
                 borderRadius: '16px',
                 color: 'white',
@@ -342,7 +400,7 @@ export default function Profile() {
                 position: 'relative',
                 overflow: 'hidden'
             }}>
-                <div style={{ position: 'absolute', right: '-50px', top: '-50px', fontSize: '10rem', opacity: 0.04 }}>👤</div>
+                <div style={{ position: 'absolute', right: '-50px', top: '-50px', fontSize: '10rem', opacity: 0.04 }}>{role === 'admin' ? '🛡️' : '👤'}</div>
 
                 <div style={{
                     width: '85px',
@@ -363,18 +421,19 @@ export default function Profile() {
                 <div>
                     <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: 800 }}>{user.name}</h1>
                     <p style={{ margin: '6px 0 0 0', opacity: 0.85, fontSize: '1rem' }}>
-                        {profileData.title || (role === 'employer' ? 'Company Administrator' : 'Professional Candidate')} • {user.email}
+                        {profileData.title || (role === 'admin' ? t('profile.system_overseer') : role === 'employer' ? t('profile.company_admin') : t('profile.pro_candidate'))} • {user.email}
                     </p>
                     <div style={{ marginTop: '12px' }}>
                         <span style={{
-                            background: 'rgba(255,255,255,0.15)',
+                            background: role === 'admin' ? '#ef4444' : 'rgba(255,255,255,0.15)',
                             padding: '4px 10px',
                             borderRadius: '16px',
                             fontSize: '0.7rem',
                             fontWeight: 700,
-                            border: '1px solid rgba(255,255,255,0.25)'
+                            border: role === 'admin' ? 'none' : '1px solid rgba(255,255,255,0.25)',
+                            color: 'white'
                         }}>
-                            {role.toUpperCase()} ACCOUNT
+                            {role.toUpperCase()} {t('profile.account_suffix')}
                         </span>
                     </div>
                 </div>
@@ -386,7 +445,7 @@ export default function Profile() {
                 </div>
             )}
 
-            {role === 'employer' ? renderEmployerProfile() : renderSeekerProfile()}
+            {role === 'admin' ? renderAdminProfile() : (role === 'employer' ? renderEmployerProfile() : renderSeekerProfile())}
         </div>
     );
 }

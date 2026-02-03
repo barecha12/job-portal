@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../services/axios-client";
+import { useTranslation } from "react-i18next";
 
 export default function JobForm() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -76,10 +78,10 @@ export default function JobForm() {
         <div className="animated fadeInDown">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
                 <h1 style={{ margin: 0 }}>
-                    {job.id ? `Edit Job: ${job.title}` : 'Post a New Job'}
+                    {job.id ? t('job_form.update_title', { title: job.title }) : t('job_form.create_title')}
                 </h1>
                 <button onClick={() => navigate('/jobs')} className="btn-logout" style={{ background: 'white', border: '1px solid #e2e8f0' }}>
-                    Cancel & Return
+                    {t('job_form.cancel')}
                 </button>
             </div>
 
@@ -87,7 +89,7 @@ export default function JobForm() {
                 {loading && (
                     <div style={{ padding: '60px', textAlign: 'center' }}>
                         <div className="animate-pulse-glow" style={{ width: '40px', height: '40px', background: 'var(--primary-color)', borderRadius: '50%', margin: '0 auto' }}></div>
-                        <p style={{ marginTop: '15px' }}>Loading job details...</p>
+                        <p style={{ marginTop: '15px' }}>{t('job_form.loading')}</p>
                     </div>
                 )}
 
@@ -103,24 +105,24 @@ export default function JobForm() {
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '25px', marginBottom: '25px' }}>
                             <div>
-                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Job Title</label>
+                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.title_label')}</label>
                                 <input
                                     value={job.title}
                                     onChange={ev => setJob({ ...job, title: ev.target.value })}
-                                    placeholder="e.g. Senior Full Stack Developer"
+                                    placeholder={t('job_form.title_placeholder')}
                                     required
                                     style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
                                 />
                             </div>
                             <div>
-                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Select Company</label>
+                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.company_label')}</label>
                                 <select
                                     value={job.company_id}
                                     onChange={ev => setJob({ ...job, company_id: ev.target.value })}
                                     required
                                     style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
                                 >
-                                    <option value="">Select a company</option>
+                                    <option value="">{t('job_form.company_select')}</option>
                                     {companies.map(c => (
                                         <option key={c.id} value={c.id}>{c.name}</option>
                                     ))}
@@ -130,53 +132,53 @@ export default function JobForm() {
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '25px' }}>
                             <div>
-                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Location</label>
+                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.location_label')}</label>
                                 <input
                                     value={job.location}
                                     onChange={ev => setJob({ ...job, location: ev.target.value })}
-                                    placeholder="e.g. Remote, New York, NY"
+                                    placeholder={t('job_form.location_placeholder')}
                                     required
                                     style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
                                 />
                             </div>
                             <div>
-                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Job Type</label>
+                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.type_label')}</label>
                                 <select
                                     value={job.type}
                                     onChange={ev => setJob({ ...job, type: ev.target.value })}
                                     style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
                                 >
-                                    <option value="Full-time">Full-time</option>
-                                    <option value="Part-time">Part-time</option>
-                                    <option value="Contract">Contract</option>
-                                    <option value="Internship">Internship</option>
-                                    <option value="Remote">Remote</option>
+                                    <option value="Full-time">{t('jobs.full_time')}</option>
+                                    <option value="Part-time">{t('jobs.part_time')}</option>
+                                    <option value="Contract">{t('jobs.contract')}</option>
+                                    <option value="Internship">{t('jobs.internship')}</option>
+                                    <option value="Remote">{t('jobs.remote')}</option>
                                 </select>
                             </div>
                             <div>
-                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Category</label>
+                                <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.category_label')}</label>
                                 <input
                                     value={job.category}
                                     onChange={ev => setJob({ ...job, category: ev.target.value })}
-                                    placeholder="e.g. Technology"
+                                    placeholder={t('job_form.category_placeholder')}
                                     style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
                                 />
                             </div>
                         </div>
 
                         <div className="mb-4">
-                            <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Salary Range (Optional)</label>
+                            <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.salary_label')}</label>
                             <input
                                 type="number"
                                 value={job.salary}
                                 onChange={ev => setJob({ ...job, salary: ev.target.value })}
-                                placeholder="e.g. 80000"
+                                placeholder={t('job_form.salary_placeholder')}
                                 style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
                             />
                         </div>
 
                         <div className="mb-4">
-                            <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Application Deadline</label>
+                            <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.deadline_label')}</label>
                             <input
                                 type="date"
                                 value={job.deadline}
@@ -186,11 +188,11 @@ export default function JobForm() {
                         </div>
 
                         <div className="mb-4">
-                            <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Job Description</label>
+                            <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.description_label')}</label>
                             <textarea
                                 value={job.description}
                                 onChange={ev => setJob({ ...job, description: ev.target.value })}
-                                placeholder="Main roles and responsibilities..."
+                                placeholder={t('job_form.description_placeholder')}
                                 rows="6"
                                 required
                                 style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit' }}
@@ -198,11 +200,11 @@ export default function JobForm() {
                         </div>
 
                         <div className="mb-4">
-                            <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>Key Requirements</label>
+                            <label style={{ fontWeight: '600', display: 'block', marginBottom: '8px' }}>{t('job_form.requirements_label')}</label>
                             <textarea
                                 value={job.requirements}
                                 onChange={ev => setJob({ ...job, requirements: ev.target.value })}
-                                placeholder="Essential skills, experience, and certifications..."
+                                placeholder={t('job_form.requirements_placeholder')}
                                 rows="6"
                                 style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit' }}
                             />
@@ -210,7 +212,7 @@ export default function JobForm() {
 
                         <div style={{ borderTop: '1px solid #f1f5f9', marginTop: '30px', paddingTop: '30px', display: 'flex', justifyContent: 'flex-end' }}>
                             <button className="btn" style={{ minWidth: '200px', padding: '15px' }}>
-                                {job.id ? 'Update Job Posting' : 'Post Job Now'}
+                                {job.id ? t('job_form.update_btn') : t('job_form.post_btn')}
                             </button>
                         </div>
                     </form>

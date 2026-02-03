@@ -26,6 +26,11 @@ axiosClient.interceptors.response.use(
             if (response.status === 401) {
                 localStorage.removeItem('ACCESS_TOKEN');
             }
+            if (response.status === 503 && response.data.maintenance) {
+                if (window.location.pathname !== '/maintenance') {
+                    window.location.href = '/maintenance';
+                }
+            }
         } catch (e) {
             console.error(e);
         }

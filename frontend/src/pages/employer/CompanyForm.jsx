@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../services/axios-client";
+import { useTranslation } from "react-i18next";
 
 export default function CompanyForm() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -60,10 +62,10 @@ export default function CompanyForm() {
         <div className="animated fadeInDown">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
                 <h1 style={{ margin: 0 }}>
-                    {company.id ? `Update: ${company.name}` : 'Create New Company'}
+                    {company.id ? t('company_form.update_title', { name: company.name }) : t('company_form.create_title')}
                 </h1>
                 <button onClick={() => navigate('/my-companies')} className="btn-logout" style={{ background: 'white', border: '1px solid #e2e8f0' }}>
-                    Cancel & Return
+                    {t('company_form.cancel')}
                 </button>
             </div>
 
@@ -71,7 +73,7 @@ export default function CompanyForm() {
                 {loading && (
                     <div style={{ padding: '60px', textAlign: 'center' }}>
                         <div className="animate-pulse-glow" style={{ width: '40px', height: '40px', background: 'var(--primary-color)', borderRadius: '50%', margin: '0 auto' }}></div>
-                        <p style={{ marginTop: '15px' }}>Loading company details...</p>
+                        <p style={{ marginTop: '15px' }}>{t('company_form.loading')}</p>
                     </div>
                 )}
 
@@ -87,46 +89,46 @@ export default function CompanyForm() {
                     <form onSubmit={onSubmit}>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '25px', marginBottom: '25px' }}>
                             <div>
-                                <label>Company Name</label>
+                                <label>{t('company_form.name_label')}</label>
                                 <input
                                     value={company.name}
                                     onChange={ev => setCompany({ ...company, name: ev.target.value })}
-                                    placeholder="e.g. Acme Corporation"
+                                    placeholder={t('company_form.name_placeholder')}
                                     required
                                 />
                             </div>
                             <div>
-                                <label>Website URL</label>
+                                <label>{t('company_form.website_label')}</label>
                                 <input
                                     value={company.website}
                                     onChange={ev => setCompany({ ...company, website: ev.target.value })}
-                                    placeholder="e.g. https://acme.com"
+                                    placeholder={t('company_form.website_placeholder')}
                                 />
                             </div>
                         </div>
 
                         <div className="mb-4">
-                            <label>Logo URL</label>
+                            <label>{t('company_form.logo_label')}</label>
                             <input
                                 value={company.logo}
                                 onChange={ev => setCompany({ ...company, logo: ev.target.value })}
-                                placeholder="Link to your company logo"
+                                placeholder={t('company_form.logo_placeholder')}
                             />
                         </div>
 
                         <div className="mb-4">
-                            <label>Company Description</label>
+                            <label>{t('company_form.description_label')}</label>
                             <textarea
                                 value={company.description}
                                 onChange={ev => setCompany({ ...company, description: ev.target.value })}
-                                placeholder="Tell candidates about your company's mission and culture..."
+                                placeholder={t('company_form.description_placeholder')}
                                 rows="6"
                             />
                         </div>
 
                         <div style={{ borderTop: '1px solid #f1f5f9', marginTop: '30px', paddingTop: '30px', display: 'flex', justifyContent: 'flex-end' }}>
                             <button className="btn" style={{ minWidth: '200px' }}>
-                                {company.id ? 'Save Changes' : 'Register Company'}
+                                {company.id ? t('company_form.save_btn') : t('company_form.register_btn')}
                             </button>
                         </div>
                     </form>

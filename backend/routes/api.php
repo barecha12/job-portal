@@ -62,4 +62,22 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', [ProfileController::class, 'show']);
     Route::post('/user', [ProfileController::class, 'update']);
     Route::get('/dashboard-stats', [\App\Http\Controllers\DashboardController::class, 'stats']);
+
+    // Admin Routes
+    Route::group(['middleware' => ['role:admin'], 'prefix' => 'admin'], function () {
+        Route::get('/stats', [\App\Http\Controllers\AdminController::class, 'getStats']);
+        Route::get('/analytics', [\App\Http\Controllers\AdminController::class, 'getAnalytics']);
+        Route::get('/users', [\App\Http\Controllers\AdminController::class, 'listUsers']);
+        Route::delete('/users/{id}', [\App\Http\Controllers\AdminController::class, 'deleteUser']);
+        Route::get('/jobs', [\App\Http\Controllers\AdminController::class, 'listJobs']);
+        Route::patch('/jobs/{id}/status', [\App\Http\Controllers\AdminController::class, 'updateJobStatus']);
+        Route::delete('/jobs/{id}', [\App\Http\Controllers\AdminController::class, 'deleteJob']);
+        Route::get('/companies', [\App\Http\Controllers\AdminController::class, 'listCompanies']);
+        Route::delete('/companies/{id}', [\App\Http\Controllers\AdminController::class, 'deleteCompany']);
+        Route::get('/applications', [\App\Http\Controllers\AdminController::class, 'listApplications']);
+        Route::delete('/applications/{id}', [\App\Http\Controllers\AdminController::class, 'deleteApplication']);
+        Route::get('/activities', [\App\Http\Controllers\AdminController::class, 'getActivityLogs']);
+        Route::get('/performance', [\App\Http\Controllers\AdminController::class, 'getPerformanceMetrics']);
+        Route::post('/maintenance', [\App\Http\Controllers\AdminController::class, 'toggleMaintenance']);
+    });
 });

@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../services/axios-client";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState({ stats: [], recent_activity: [] });
     const { user } = useAuth();
@@ -22,10 +24,10 @@ export default function Dashboard() {
 
     return (
         <div className="animated fadeInDown">
-            <h1 style={{ marginBottom: '20px' }}>Dashboard</h1>
-            <p style={{ marginBottom: '30px', color: 'var(--text-secondary)' }}>Welcome back, {user.name}!</p>
+            <h1 style={{ marginBottom: '20px' }}>{t('dashboard.title')}</h1>
+            <p style={{ marginBottom: '30px', color: 'var(--text-secondary)' }}>{t('dashboard.welcome', { name: user.name })}</p>
 
-            {loading && <div className="text-center">Loading statistics...</div>}
+            {loading && <div className="text-center">{t('dashboard.loading_stats')}</div>}
 
             {!loading && (
                 <>
@@ -65,7 +67,7 @@ export default function Dashboard() {
                                     {stat.value}
                                 </div>
                                 <div style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-secondary)' }}>
-                                    {stat.label}
+                                    {stat.label.includes('Job') ? t('dashboard.total_jobs') : stat.label.includes('Compan') ? t('dashboard.total_companies') : t('dashboard.total_applications')}
                                 </div>
                             </div>
                         ))}
@@ -73,22 +75,22 @@ export default function Dashboard() {
 
                     <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
                         <div style={{ padding: '25px 30px', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '700' }}>Recent Activity</h3>
-                            <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Last 5 entries</span>
+                            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '700' }}>{t('dashboard.recent_activity')}</h3>
+                            <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>{t('dashboard.last_entries', { count: 5 })}</span>
                         </div>
                         {data.recent_activity.length === 0 ? (
                             <div style={{ padding: '60px', textAlign: 'center' }}>
                                 <div style={{ fontSize: '3rem', marginBottom: '15px' }}>📭</div>
-                                <p style={{ color: 'var(--text-secondary)', margin: 0 }}>No recent activity found.</p>
+                                <p style={{ color: 'var(--text-secondary)', margin: 0 }}>{t('dashboard.no_activity')}</p>
                             </div>
                         ) : (
                             <table style={{ margin: 0 }}>
                                 <thead>
                                     <tr>
-                                        <th>Job Title</th>
-                                        {data.role === 'employer' ? <th>Applicant</th> : <th>Company</th>}
-                                        <th>Date</th>
-                                        <th>Status</th>
+                                        <th>{t('dashboard.job_title')}</th>
+                                        {data.role === 'employer' ? <th>{t('dashboard.applicant')}</th> : <th>{t('dashboard.company')}</th>}
+                                        <th>{t('dashboard.date')}</th>
+                                        <th>{t('dashboard.status')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -121,7 +123,7 @@ export default function Dashboard() {
                                                     textTransform: 'uppercase',
                                                     letterSpacing: '0.05em'
                                                 }}>
-                                                    {item.status}
+                                                    {t(`applications.status_${item.status}`)}
                                                 </span>
                                             </td>
                                         </tr>

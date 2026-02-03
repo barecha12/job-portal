@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axiosClient from "../../services/axios-client";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export default function CompanyDetails() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [company, setCompany] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -25,17 +27,17 @@ export default function CompanyDetails() {
         return (
             <div className="text-center" style={{ padding: '100px' }}>
                 <div className="animate-pulse-glow" style={{ width: '50px', height: '50px', background: 'var(--primary-color)', borderRadius: '50%', margin: '0 auto 20px' }}></div>
-                <p style={{ color: 'var(--text-secondary)' }}>Loading company details...</p>
+                <p style={{ color: 'var(--text-secondary)' }}>{t('company_details.loading')}</p>
             </div>
         );
     }
 
     if (!company) return (
         <div className="card text-center" style={{ padding: '100px' }}>
-            <h2 style={{ color: 'var(--error-color)' }}>Company Not Found</h2>
-            <p style={{ marginBottom: '20px' }}>The company you are looking for might have been removed or is no longer available.</p>
+            <h2 style={{ color: 'var(--error-color)' }}>{t('company_details.not_found')}</h2>
+            <p style={{ marginBottom: '20px' }}>{t('company_details.not_found_desc')}</p>
             <Link to={role === 'employer' ? "/my-companies" : "/jobs"} className="btn">
-                {role === 'employer' ? "Back to My Companies" : "Explore Jobs"}
+                {role === 'employer' ? t('company_details.back_to_companies') : t('company_details.explore_jobs')}
             </Link>
         </div>
     );
@@ -43,9 +45,9 @@ export default function CompanyDetails() {
     return (
         <div className="animated fadeIn">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                <h1 style={{ margin: 0 }}>Company Profile</h1>
+                <h1 style={{ margin: 0 }}>{t('company_details.profile_title')}</h1>
                 <Link to={role === 'employer' ? "/my-companies" : "/jobs"} className="btn-logout" style={{ background: 'white', border: '1px solid #e2e8f0' }}>
-                    {role === 'employer' ? "Back to My Companies" : "Back to Jobs"}
+                    {role === 'employer' ? t('company_details.back_to_companies') : t('company_details.back_to_jobs')}
                 </Link>
             </div>
 
@@ -108,7 +110,7 @@ export default function CompanyDetails() {
                                     </a>
                                 )}
                                 <span style={{ opacity: '0.6', fontSize: '1.1rem' }}>
-                                    ID: #{company.id}
+                                    {t('company_details.id_label')}: #{company.id}
                                 </span>
                             </div>
                         </div>
@@ -119,24 +121,24 @@ export default function CompanyDetails() {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '40px' }}>
                         <div>
                             <h2 className="section-title">
-                                <span>📖</span> About Company
+                                <span>📖</span> {t('company_details.about_title')}
                             </h2>
                             <div style={{ color: 'var(--text-primary)', whiteSpace: 'pre-wrap', fontSize: '1.1rem', lineHeight: '1.9' }}>
-                                {company.description || 'No description provided for this company.'}
+                                {company.description || t('company_details.no_description')}
                             </div>
                         </div>
 
                         {role === 'employer' && company.user_id === user.id && (
                             <div>
                                 <h2 className="section-title">
-                                    <span>🔍</span> Actions
+                                    <span>🔍</span> {t('company_details.actions_title')}
                                 </h2>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                                     <Link to={`/companies/${company.id}/edit`} className="btn-edit" style={{ padding: '15px', textAlign: 'center', borderRadius: '12px' }}>
-                                        Edit Details
+                                        {t('company_details.edit_btn')}
                                     </Link>
                                     <Link to="/jobs/new" className="btn" style={{ padding: '15px', textAlign: 'center', borderRadius: '12px' }}>
-                                        Post a Job for this Company
+                                        {t('company_details.post_job_btn')}
                                     </Link>
                                 </div>
                             </div>
@@ -146,7 +148,7 @@ export default function CompanyDetails() {
             </div>
 
             <div style={{ marginTop: '40px' }}>
-                <h2 style={{ marginBottom: '25px', fontSize: '1.75rem', fontWeight: '700' }}>Jobs at {company.name}</h2>
+                <h2 style={{ marginBottom: '25px', fontSize: '1.75rem', fontWeight: '700' }}>{t('company_details.jobs_at_title', { name: company.name })}</h2>
                 {company.jobs && company.jobs.length > 0 ? (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '25px' }}>
                         {company.jobs.map(job => (
@@ -155,11 +157,11 @@ export default function CompanyDetails() {
                                     <div>
                                         <h3 style={{ margin: '0 0 5px 0', fontSize: '1.25rem' }}>{job.title}</h3>
                                         <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                                            📍 {job.location} | 💰 {job.salary || 'Competitive'}
+                                            📍 {job.location} | 💰 {job.salary || t('company_details.competitive')}
                                         </div>
                                     </div>
                                     <span className="status-accepted" style={{ fontSize: '0.7rem' }}>
-                                        {job.type}
+                                        {t(`jobs.${job.type.toLowerCase().replace('-', '_')}`) || job.type}
                                     </span>
                                 </div>
                                 <p style={{
@@ -174,9 +176,9 @@ export default function CompanyDetails() {
                                     {job.description}
                                 </p>
                                 <div style={{ display: 'flex', gap: '10px' }}>
-                                    <Link to={`/jobs/${job.id}`} className="btn-edit" style={{ flex: 1, textAlign: 'center' }}>View Details</Link>
+                                    <Link to={`/jobs/${job.id}`} className="btn-edit" style={{ flex: 1, textAlign: 'center' }}>{t('company_details.view_details')}</Link>
                                     {role === 'employer' && company.user_id === user.id && (
-                                        <Link to={`/jobs/${job.id}/edit`} className="btn-logout" style={{ background: 'white', border: '1px solid #e2e8f0' }}>Edit</Link>
+                                        <Link to={`/jobs/${job.id}/edit`} className="btn-logout" style={{ background: 'white', border: '1px solid #e2e8f0' }}>{t('company_details.edit_job')}</Link>
                                     )}
                                 </div>
                             </div>
@@ -184,8 +186,8 @@ export default function CompanyDetails() {
                     </div>
                 ) : (
                     <div className="card text-center" style={{ padding: '60px' }}>
-                        <p style={{ color: 'var(--text-secondary)', margin: 0 }}>No jobs posted by this company yet.</p>
-                        <Link to="/jobs/new" style={{ marginTop: '15px', display: 'inline-block' }}>Post the first job</Link>
+                        <p style={{ color: 'var(--text-secondary)', margin: 0 }}>{t('company_details.no_jobs')}</p>
+                        <Link to="/jobs/new" style={{ marginTop: '15px', display: 'inline-block' }}>{t('company_details.post_first_job')}</Link>
                     </div>
                 )}
             </div>

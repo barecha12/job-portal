@@ -5,8 +5,10 @@ import Footer from "../../components/layout/Footer";
 import JobCard from "../../components/jobs/JobCard";
 import Loader from "../../components/common/Loader";
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 export default function LandingPage() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
     const [locationQuery, setLocationQuery] = useState("");
@@ -65,10 +67,10 @@ export default function LandingPage() {
             }}>
                 <div style={{ position: 'relative', zIndex: 2 }}>
                     <h1 className="animate-float" style={{ fontSize: '3.5rem', marginBottom: '20px', fontWeight: '800', textShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-                        Find Your Dream Job Today
+                        {t('hero.title')}
                     </h1>
                     <p className="slide-up delay-200" style={{ fontSize: '1.25rem', marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px', opacity: 0.9 }}>
-                        Connect with top employers and discover opportunities that match your skills and aspirations.
+                        {t('hero.subtitle')}
                     </p>
 
                     {/* Search Bar */}
@@ -87,7 +89,7 @@ export default function LandingPage() {
                             <span style={{ color: '#999', marginRight: '10px' }}>🔍</span>
                             <input
                                 type="text"
-                                placeholder="Job title, keywords..."
+                                placeholder={t('hero.search_placeholder')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 style={{
@@ -105,7 +107,7 @@ export default function LandingPage() {
                             <span style={{ color: '#999', marginRight: '10px' }}>📍</span>
                             <input
                                 type="text"
-                                placeholder="City or zip code"
+                                placeholder={t('hero.location_placeholder')}
                                 value={locationQuery}
                                 onChange={(e) => setLocationQuery(e.target.value)}
                                 style={{
@@ -126,7 +128,7 @@ export default function LandingPage() {
                             marginBottom: 0,
                             boxShadow: 'none'
                         }}>
-                            Find Jobs
+                            {t('hero.find_jobs')}
                         </button>
                     </form>
 
@@ -137,7 +139,7 @@ export default function LandingPage() {
             {/* Trusted Companies Logo Strip */}
             <section style={{ borderBottom: '1px solid #eee', padding: '30px 0', background: 'white', marginBottom: '40px' }}>
                 <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-                    <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Trusted by innovative companies</p>
+                    <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{t('home.trusted_by')}</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '50px', flexWrap: 'wrap', alignItems: 'center', opacity: 0.7 }}>
                         {recentJobs.length > 0 ? (
                             // Use companies from recent jobs to show real active companies
@@ -162,21 +164,21 @@ export default function LandingPage() {
             {/* Recent Jobs Section (New) */}
             <section className="container animated fadeInUp" style={{ maxWidth: '1000px', margin: '0 auto 80px', padding: '0 20px', position: 'relative', zIndex: 10 }}>
                 <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                    <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>Recent Jobs</h2>
-                    <p style={{ color: 'var(--text-secondary)' }}>The latest openings from top companies</p>
+                    <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>{t('home.recent_jobs_title')}</h2>
+                    <p style={{ color: 'var(--text-secondary)' }}>{t('home.recent_jobs_subtitle')}</p>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                    {loading && <Loader text="Loading jobs..." />}
+                    {loading && <Loader text={t('home.loading_jobs')} />}
                     {!loading && recentJobs.length === 0 && (
-                        <div className="text-center">No recent jobs found.</div>
+                        <div className="text-center">{t('home.no_recent_jobs')}</div>
                     )}
                     {!loading && recentJobs.map(job => (
                         <JobCard key={job.id} job={job} />
                     ))}
                 </div>
                 <div className="text-center" style={{ marginTop: '40px' }}>
-                    <Link to="/jobs" style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>Browse All Jobs &rarr;</Link>
+                    <Link to="/jobs" style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{t('home.browse_all_jobs')} &rarr;</Link>
                 </div>
             </section>
 
@@ -188,9 +190,9 @@ export default function LandingPage() {
                     background: 'white',
                     marginBottom: '40px'
                 }}>
-                    <h2 style={{ marginBottom: '20px', fontSize: '2rem' }}>About <span className="gradient-text">Hojio</span></h2>
+                    <h2 style={{ marginBottom: '20px', fontSize: '2rem' }}>{t('home.about_title')} <span className="gradient-text">Hojio</span></h2>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '800px', margin: '0 auto 40px' }}>
-                        We are dedicated to bridging the gap between talent and opportunity. Our platform uses advanced algorithms to ensure perfect matches, saving time for both employers and job seekers.
+                        {t('home.about_description')}
                     </p>
 
                     <div style={{
@@ -211,7 +213,7 @@ export default function LandingPage() {
                                     stats.activeJobs > 999 ? `${(stats.activeJobs / 1000).toFixed(1)}k+` : stats.activeJobs
                                 )}
                             </div>
-                            <div style={{ color: 'var(--text-secondary)' }}>Active Jobs</div>
+                            <div style={{ color: 'var(--text-secondary)' }}>{t('home.active_jobs')}</div>
                         </div>
                         <div className="hover-scale">
                             <div style={{ fontSize: '3rem', color: 'var(--secondary-color)', fontWeight: 'bold', minHeight: '4.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -221,7 +223,7 @@ export default function LandingPage() {
                                     stats.companies > 999 ? `${(stats.companies / 1000).toFixed(1)}k+` : stats.companies
                                 )}
                             </div>
-                            <div style={{ color: 'var(--text-secondary)' }}>Companies</div>
+                            <div style={{ color: 'var(--text-secondary)' }}>{t('dashboard.stats_companies') || 'Companies'}</div>
                         </div>
                         <div className="hover-scale">
                             <div style={{ fontSize: '3rem', color: 'var(--success-color)', fontWeight: 'bold', minHeight: '4.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -231,7 +233,7 @@ export default function LandingPage() {
                                     stats.candidates > 999 ? `${(stats.candidates / 1000).toFixed(1)}k+` : stats.candidates
                                 )}
                             </div>
-                            <div style={{ color: 'var(--text-secondary)' }}>Candidates</div>
+                            <div style={{ color: 'var(--text-secondary)' }}>{t('dashboard.stats_candidates') || 'Candidates'}</div>
                         </div>
                     </div>
                 </div>
@@ -239,7 +241,7 @@ export default function LandingPage() {
 
             {/* Featured Categories */}
             <section className="container" style={{ maxWidth: '1200px', margin: '0 auto 80px', padding: '0 20px' }}>
-                <h2 className="text-center" style={{ marginBottom: '40px', color: 'var(--text-primary)', fontSize: '2rem' }}>Featured Categories</h2>
+                <h2 className="text-center" style={{ marginBottom: '40px', color: 'var(--text-primary)', fontSize: '2rem' }}>{t('home.featured_categories')}</h2>
                 <div className="animated zoomIn" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
                     {categories.length > 0 ? (
                         categories.map((cat) => (
@@ -254,12 +256,12 @@ export default function LandingPage() {
                                 onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                                 onClick={() => navigate(`/jobs?category=${cat.category}`)}
                             >
-                                <div style={{ fontSize: '1.2rem', fontWeight: '600', color: 'var(--primary-color)' }}>{cat.category}</div>
-                                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '5px' }}>{cat.count} Jobs</div>
+                                <div style={{ fontSize: '1.2rem', fontWeight: '600', color: 'var(--primary-color)' }}>{t(`categories.${cat.category.toLowerCase()}`) || cat.category}</div>
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '5px' }}>{t('home.jobs_count', { count: cat.count })}</div>
                             </div>
                         ))
                     ) : (
-                        ['Technology', 'Marketing', 'Finance', 'Design', 'Healthcare', 'Education', 'Engineering', 'Sales'].map((cat) => (
+                        ['technology', 'marketing', 'finance', 'design', 'healthcare', 'education', 'engineering', 'sales'].map((cat) => (
                             <div key={cat} className="card" style={{
                                 textAlign: 'center',
                                 padding: '30px',
@@ -271,8 +273,8 @@ export default function LandingPage() {
                                 onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                                 onClick={() => navigate('/jobs')}
                             >
-                                <div style={{ fontSize: '1.2rem', fontWeight: '600', color: 'var(--primary-color)' }}>{cat}</div>
-                                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '5px' }}>0 Jobs</div>
+                                <div style={{ fontSize: '1.2rem', fontWeight: '600', color: 'var(--primary-color)' }}>{t(`categories.${cat}`)}</div>
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '5px' }}>{t('home.jobs_count', { count: 0 })}</div>
                             </div>
                         ))
                     )}
@@ -290,12 +292,12 @@ export default function LandingPage() {
                 <div style={{ position: 'absolute', top: '10%', right: '5%', width: '200px', height: '200px', background: 'rgba(102, 126, 234, 0.1)', borderRadius: '50%', filter: 'blur(60px)' }}></div>
                 <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: '250px', height: '250px', background: 'rgba(118, 75, 162, 0.1)', borderRadius: '50%', filter: 'blur(60px)' }}></div>
                 <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-                    <h2 className="text-center" style={{ marginBottom: '50px', color: 'var(--text-primary)', fontSize: '2rem' }}>How It Works</h2>
+                    <h2 className="text-center" style={{ marginBottom: '50px', color: 'var(--text-primary)', fontSize: '2rem' }}>{t('home.how_it_works_title')}</h2>
                     <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
                         {[
-                            { step: '01', title: 'Create Account', desc: 'Sign up as a job seeker or employer to get started.' },
-                            { step: '02', title: 'Upload/Post', desc: 'Seekers upload resumes; Employers post job openings.' },
-                            { step: '03', title: 'Get Hired', desc: 'Apply to jobs and connect with your future team.' },
+                            { step: '01', title: t('home.step_1_title'), desc: t('home.step_1_desc') },
+                            { step: '02', title: t('home.step_2_title'), desc: t('home.step_2_desc') },
+                            { step: '03', title: t('home.step_3_title'), desc: t('home.step_3_desc') },
                         ].map((item) => (
                             <div key={item.step} style={{ flex: 1, minWidth: '280px', textAlign: 'center' }}>
                                 <div style={{
@@ -323,11 +325,11 @@ export default function LandingPage() {
 
             {/* Testimonials */}
             <section className="container" style={{ maxWidth: '1000px', margin: '0 auto 80px', padding: '0 20px' }}>
-                <h2 className="text-center" style={{ marginBottom: '40px', color: 'var(--text-primary)', fontSize: '2rem' }}>What People Say</h2>
+                <h2 className="text-center" style={{ marginBottom: '40px', color: 'var(--text-primary)', fontSize: '2rem' }}>{t('home.testimonials_title')}</h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
                     {[
-                        { name: 'Sarah J.', role: 'Software Engineer', text: 'I found my dream job within a week of using this portal. The process was seamless!' },
-                        { name: 'Mark T.', role: 'Hiring Manager', text: 'Posting jobs and managing applications has never been easier. Highly recommended.' },
+                        { name: 'Sarah J.', role: 'Software Engineer', text: t('home.sarah_text') },
+                        { name: 'Mark T.', role: 'Hiring Manager', text: t('home.mark_text') },
                     ].map((t, i) => (
                         <div key={i} className="card" style={{ padding: '30px', fontStyle: 'italic' }}>
                             <p style={{ marginBottom: '20px', color: 'var(--text-secondary)', fontSize: '1.1rem' }}>"{t.text}"</p>
@@ -346,10 +348,10 @@ export default function LandingPage() {
             {/* Contact Section */}
             <section id="contact" className="container" style={{ maxWidth: '1000px', margin: '0 auto 80px', padding: '0 20px' }}>
                 <div style={{ background: 'var(--primary-dark)', padding: '60px', borderRadius: '20px', color: 'white', textAlign: 'center' }}>
-                    <h2 style={{ marginBottom: '20px', fontSize: '2rem' }}>Ready to Start Your Journey?</h2>
-                    <p style={{ marginBottom: '30px', opacity: 0.9, fontSize: '1.1rem' }}>Join thousands of satisfied users who have found their path with us.</p>
+                    <h2 style={{ marginBottom: '20px', fontSize: '2rem' }}>{t('home.cta_title')}</h2>
+                    <p style={{ marginBottom: '30px', opacity: 0.9, fontSize: '1.1rem' }}>{t('home.cta_subtitle')}</p>
                     <Link to="/signup" className="btn" style={{ backgroundColor: 'white', color: 'var(--primary-dark)', fontSize: '1.1rem', padding: '15px 40px', border: 'none' }}>
-                        Join Now
+                        {t('home.join_now')}
                     </Link>
                 </div>
             </section>

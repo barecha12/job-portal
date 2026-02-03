@@ -2,8 +2,10 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../services/axios-client";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export default function Signup() {
+    const { t } = useTranslation();
     const nameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -18,12 +20,12 @@ export default function Signup() {
 
         // Basic Client-Side Validation
         if (!nameRef.current.value || !emailRef.current.value || !passwordRef.current.value) {
-            setErrors({ message: ['All fields are required'] });
+            setErrors({ message: [t('auth.fields_required')] });
             return;
         }
 
         if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
-            setErrors({ password: ['Passwords do not match'] });
+            setErrors({ password: [t('auth.passwords_dont_match')] });
             return;
         }
 
@@ -47,7 +49,7 @@ export default function Signup() {
                 if (response && response.status === 422) {
                     setErrors(response.data);
                 } else {
-                    setErrors({ message: ['An unexpected error occurred. Please try again.'] });
+                    setErrors({ message: [t('auth.unexpected_error')] });
                 }
             })
     }
@@ -65,8 +67,8 @@ export default function Signup() {
                 <form onSubmit={onSubmit}>
                     <div className="text-center mb-4">
                         <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚀</div>
-                        <h1 className="title" style={{ color: 'white', marginBottom: '0.5rem' }}>Get Started</h1>
-                        <p style={{ color: '#94a3b8' }}>Join our community of professionals</p>
+                        <h1 className="title" style={{ color: 'white', marginBottom: '0.5rem' }}>{t('auth.create_account')}</h1>
+                        <p style={{ color: '#94a3b8' }}>{t('auth.create_account_subtitle')}</p>
                     </div>
 
                     {errors && <div className="alert" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: '#ef4444' }}>
@@ -76,28 +78,28 @@ export default function Signup() {
                     </div>}
 
                     <div className="mb-4">
-                        <label style={{ color: '#94a3b8' }}>Full Name</label>
+                        <label style={{ color: '#94a3b8' }}>{t('auth.full_name_label')}</label>
                         <input
                             ref={nameRef}
-                            placeholder="John Doe"
+                            placeholder={t('auth.placeholder_name')}
                             type="text"
                             style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
                         />
                     </div>
 
                     <div className="mb-4">
-                        <label style={{ color: '#94a3b8' }}>Email Address</label>
+                        <label style={{ color: '#94a3b8' }}>{t('auth.email_label')}</label>
                         <input
                             ref={emailRef}
                             type="email"
-                            placeholder="name@company.com"
+                            placeholder={t('auth.placeholder_email')}
                             style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
                         />
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                         <div className="mb-4">
-                            <label style={{ color: '#94a3b8' }}>Password</label>
+                            <label style={{ color: '#94a3b8' }}>{t('auth.password_label')}</label>
                             <input
                                 ref={passwordRef}
                                 type="password"
@@ -107,7 +109,7 @@ export default function Signup() {
                         </div>
 
                         <div className="mb-4">
-                            <label style={{ color: '#94a3b8' }}>Confirm</label>
+                            <label style={{ color: '#94a3b8' }}>{t('auth.confirm_label')}</label>
                             <input
                                 ref={passwordConfirmationRef}
                                 type="password"
@@ -118,21 +120,21 @@ export default function Signup() {
                     </div>
 
                     <div className="mb-4">
-                        <label style={{ color: '#94a3b8' }}>I want to...</label>
+                        <label style={{ color: '#94a3b8' }}>{t('auth.i_want_to')}</label>
                         <select
                             ref={roleRef}
                             defaultValue="seeker"
                             style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
                         >
-                            <option value="seeker" style={{ color: 'black' }}>Find a job (Job Seeker)</option>
-                            <option value="employer" style={{ color: 'black' }}>Hire talent (Employer)</option>
+                            <option value="seeker" style={{ color: 'black' }}>{t('auth.role_seeker')}</option>
+                            <option value="employer" style={{ color: 'black' }}>{t('auth.role_employer')}</option>
                         </select>
                     </div>
 
-                    <button className="btn btn-block" style={{ marginTop: '1rem' }}>Create Account</button>
+                    <button className="btn btn-block" style={{ marginTop: '1rem' }}>{t('auth.sign_up_btn')}</button>
 
                     <p className="message" style={{ color: '#94a3b8', marginTop: '2rem' }}>
-                        Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)' }}>Sign In</Link>
+                        {t('auth.has_account')} <Link to="/login" style={{ color: 'var(--primary-color)' }}>{t('auth.sign_in_btn')}</Link>
                     </p>
                 </form>
             </div>

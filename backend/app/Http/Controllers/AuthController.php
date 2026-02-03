@@ -12,6 +12,13 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        $maintenanceMode = \App\Models\Setting::where('key', 'maintenance_mode')->first()->value ?? 'off';
+        if ($maintenanceMode === 'on') {
+            return response()->json([
+                'message' => 'Registration is temporarily disabled during system maintenance.'
+            ], 503);
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -48,6 +55,15 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
+
+        $maintenanceMode = \App\Models\Setting::where('key', 'maintenance_mode')->first()->value ?? 'off';
+        if ($maintenanceMode === 'on' && $user->role !== 'admin') {
+            Auth::logout();
+            return response()->json([
+                'message' => 'Maintenance in progress. Only administrators can access the system at this time.',
+                'maintenance' => true
+            ], 503);
+        }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 

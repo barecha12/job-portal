@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axiosClient from "../../services/axios-client";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export default function JobDetails() {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -35,7 +37,7 @@ export default function JobDetails() {
         axiosClient.post('/applications', { job_id: job.id })
             .then(({ data }) => {
                 setApplying(false);
-                setMessage({ type: 'success', text: 'Application submitted successfully!' });
+                setMessage({ type: 'success', text: t('jobs.apply_success') });
                 // Update local job state to include the new application
                 setJob({
                     ...job,
@@ -44,7 +46,7 @@ export default function JobDetails() {
             })
             .catch(err => {
                 setApplying(false);
-                const errorMsg = err.response?.data?.message || 'Failed to submit application.';
+                const errorMsg = err.response?.data?.message || t('jobs.apply_failed');
                 setMessage({ type: 'danger', text: errorMsg });
                 console.error(err);
             })
@@ -54,16 +56,16 @@ export default function JobDetails() {
         return (
             <div className="text-center" style={{ padding: '100px' }}>
                 <div className="animate-pulse-glow" style={{ width: '50px', height: '50px', background: 'var(--primary-color)', borderRadius: '50%', margin: '0 auto 20px' }}></div>
-                <p style={{ color: 'var(--text-secondary)' }}>Loading job details...</p>
+                <p style={{ color: 'var(--text-secondary)' }}>{t('jobs.loading_details')}</p>
             </div>
         );
     }
 
     if (!job) return (
         <div className="card text-center" style={{ padding: '100px' }}>
-            <h2 style={{ color: 'var(--error-color)' }}>Job Not Found</h2>
-            <p style={{ marginBottom: '20px' }}>The job you are looking for might have been removed or is no longer available.</p>
-            <Link to="/jobs" className="btn">Browse All Jobs</Link>
+            <h2 style={{ color: 'var(--error-color)' }}>{t('jobs.not_found')}</h2>
+            <p style={{ marginBottom: '20px' }}>{t('jobs.not_found_desc')}</p>
+            <Link to="/jobs" className="btn">{t('jobs.browse_all')}</Link>
         </div>
     );
 
@@ -98,14 +100,14 @@ export default function JobDetails() {
                         </div>
                         <div className="meta-item">
                             <span className={`job-type-tag ${getTypeClass(job.type)}`}>
-                                {job.type}
+                                {t(`jobs.${job.type.toLowerCase().replace('-', '_').replace(' ', '_')}`)}
                             </span>
                         </div>
                         {job.deadline && (
                             <div className="meta-item">
                                 <span style={{ fontSize: '1.2rem' }}>⏰</span>
                                 <span style={{ color: 'var(--error-color)', fontWeight: '700' }}>
-                                    Deadline: {new Date(job.deadline).toLocaleDateString()}
+                                    {t('jobs.deadline')}: {new Date(job.deadline).toLocaleDateString()}
                                 </span>
                             </div>
                         )}
@@ -124,7 +126,7 @@ export default function JobDetails() {
                                 cursor: hasApplied() ? 'default' : 'pointer'
                             }}
                         >
-                            {applying ? 'Applying...' : (hasApplied() ? '✓ Applied' : 'Apply Now')}
+                            {applying ? t('jobs.applying') : (hasApplied() ? `✓ ${t('jobs.applied')}` : t('jobs.apply_now'))}
                         </button>
                     )}
                 </div>
@@ -135,7 +137,7 @@ export default function JobDetails() {
                 {/* Job Overview */}
                 <section className="job-description-section">
                     <h2 className="section-title">
-                        <span>📄</span> Job Description
+                        <span>📄</span> {t('jobs.description')}
                     </h2>
                     <div style={{ color: 'var(--text-primary)', whiteSpace: 'pre-wrap', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '30px' }}>
                         {job.description}
@@ -144,7 +146,7 @@ export default function JobDetails() {
                     {job.requirements && (
                         <>
                             <h2 className="section-title">
-                                <span>🎯</span> Requirements
+                                <span>🎯</span> {t('jobs.requirements')}
                             </h2>
                             <div style={{ color: 'var(--text-primary)', whiteSpace: 'pre-wrap', fontSize: '1.1rem', lineHeight: '1.8' }}>
                                 {job.requirements}
@@ -155,19 +157,19 @@ export default function JobDetails() {
 
                 <section className="job-description-section">
                     <h2 className="section-title">
-                        <span>📋</span> Key Details
+                        <span>📋</span> {t('jobs.key_details')}
                     </h2>
                     <div className="company-stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
                         <div className="info-badge">
-                            <label>Salary Package</label>
-                            <span>{job.salary || 'Not Disclosed'}</span>
+                            <label>{t('jobs.salary_package')}</label>
+                            <span>{job.salary || t('jobs.not_disclosed')}</span>
                         </div>
                         <div className="info-badge">
-                            <label>Job Category</label>
-                            <span>{job.category || 'General'}</span>
+                            <label>{t('jobs.job_category')}</label>
+                            <span>{job.category || t('jobs.general')}</span>
                         </div>
                         <div className="info-badge">
-                            <label>Posted Date</label>
+                            <label>{t('jobs.posted_date')}</label>
                             <span>{new Date(job.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                         </div>
                     </div>
@@ -176,7 +178,7 @@ export default function JobDetails() {
                 {/* Company Profile Section */}
                 <section className="job-description-section">
                     <h2 className="section-title">
-                        <span>🏢</span> About the Company
+                        <span>🏢</span> {t('jobs.about_company')}
                     </h2>
                     <div style={{ display: 'flex', alignItems: 'start', gap: '25px', marginBottom: '20px' }}>
                         <img
@@ -213,7 +215,7 @@ export default function JobDetails() {
                             gap: '8px'
                         }}
                     >
-                        View Full Company Profile →
+                        {t('jobs.view_company')} →
                     </Link>
                 </section>
             </div>

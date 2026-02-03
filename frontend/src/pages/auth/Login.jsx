@@ -2,8 +2,10 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../services/axios-client";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
+    const { t } = useTranslation();
     const emailRef = useRef();
     const passwordRef = useRef();
     const { setUser, setToken, setRole } = useAuth();
@@ -16,7 +18,7 @@ export default function Login() {
         const password = passwordRef.current.value;
 
         if (!email || !password) {
-            setMessage("Please enter both email and password.");
+            setMessage(t('auth.login_error'));
             return;
         }
 
@@ -39,7 +41,7 @@ export default function Login() {
                 } else if (response && response.status === 401) {
                     setMessage(response.data.message);
                 } else {
-                    setMessage("An unexpected error occurred.");
+                    setMessage(t('auth.unexpected_error'));
                 }
             })
     }
@@ -56,8 +58,8 @@ export default function Login() {
                 <form onSubmit={onSubmit}>
                     <div className="text-center mb-4">
                         <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👋</div>
-                        <h1 className="title" style={{ color: 'white', marginBottom: '0.5rem' }}>Welcome Back</h1>
-                        <p style={{ color: '#94a3b8' }}>Please enter your details to sign in</p>
+                        <h1 className="title" style={{ color: 'white', marginBottom: '0.5rem' }}>{t('auth.welcome_back')}</h1>
+                        <p style={{ color: '#94a3b8' }}>{t('auth.sign_in_subtitle')}</p>
                     </div>
 
                     {message &&
@@ -67,18 +69,18 @@ export default function Login() {
                     }
 
                     <div className="mb-4">
-                        <label style={{ color: '#94a3b8' }}>Email Address</label>
+                        <label style={{ color: '#94a3b8' }}>{t('auth.email_label')}</label>
                         <input
                             ref={emailRef}
                             type="email"
-                            placeholder="name@company.com"
+                            placeholder={t('auth.placeholder_email')}
                             className="w-full"
                             style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
                         />
                     </div>
 
                     <div className="mb-4">
-                        <label style={{ color: '#94a3b8' }}>Password</label>
+                        <label style={{ color: '#94a3b8' }}>{t('auth.password_label')}</label>
                         <input
                             ref={passwordRef}
                             type="password"
@@ -88,10 +90,27 @@ export default function Login() {
                         />
                     </div>
 
-                    <button className="btn btn-block" style={{ marginTop: '1rem' }}>Sign In</button>
+                    <button className="btn btn-block" style={{ marginTop: '1rem' }}>{t('auth.sign_in_btn')}</button>
 
-                    <p className="message" style={{ color: '#94a3b8', marginTop: '2rem' }}>
-                        Don't have an account? <Link to="/signup" style={{ color: 'var(--primary-color)' }}>Create an account</Link>
+                    <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <p style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '0.75rem', textAlign: 'center' }}>{t('auth.demo_account')}</p>
+                        <button
+                            type="button"
+                            className="btn btn-outline"
+                            style={{ width: '100%', borderColor: 'rgba(51, 224, 172, 0.5)', color: '#33e0ac' }}
+                            onClick={() => {
+                                emailRef.current.value = 'admin@example.com';
+                                passwordRef.current.value = 'password';
+                                // Trigger submit after a tiny delay to let refs update
+                                setTimeout(() => onSubmit({ preventDefault: () => { } }), 100);
+                            }}
+                        >
+                            {t('auth.admin_login')}
+                        </button>
+                    </div>
+
+                    <p className="message" style={{ color: '#94a3b8', marginTop: '1.5rem' }}>
+                        {t('auth.no_account')} <Link to="/signup" style={{ color: 'var(--primary-color)' }}>{t('auth.create_account')}</Link>
                     </p>
                 </form>
             </div>

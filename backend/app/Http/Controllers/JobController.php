@@ -13,7 +13,7 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Job::query()->with('company');
+        $query = Job::query()->with('company')->where('status', 'active');
 
         if ($request->has('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
