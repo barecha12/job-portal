@@ -11,6 +11,8 @@ import CompanyForm from "./pages/employer/CompanyForm";
 import MyApplications from "./pages/candidate/MyApplications";
 import EmployerApplications from "./pages/employer/EmployerApplications";
 import LandingPage from "./pages/landing/LandingPage";
+import AboutUs from "./pages/landing/AboutUs";
+import Contact from "./pages/landing/Contact";
 import Profile from "./pages/profile/Profile";
 import CompanyDetails from "./pages/employer/CompanyDetails";
 import JobForm from "./pages/jobs/JobForm";
@@ -56,6 +58,14 @@ const router = createBrowserRouter([
             {
                 path: '/signup',
                 element: <Signup />
+            },
+            {
+                path: '/about',
+                element: <AboutUs />
+            },
+            {
+                path: '/contact',
+                element: <Contact />
             },
             {
                 path: '/maintenance',

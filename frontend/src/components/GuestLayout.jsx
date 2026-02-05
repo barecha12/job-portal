@@ -2,6 +2,7 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import LanguageSwitcher from "./common/LanguageSwitcher";
+import ThemeToggle from "./common/ThemeToggle";
 import { useTranslation } from "react-i18next";
 
 export default function GuestLayout() {
@@ -19,10 +20,11 @@ export default function GuestLayout() {
                 position: 'sticky',
                 top: 0,
                 zIndex: 100,
-                background: 'rgba(255,255,255,0.95)',
+                background: 'var(--navbar-bg)',
                 backdropFilter: 'blur(10px)',
-                boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                boxShadow: 'var(--shadow-sm)',
                 padding: '1rem 2rem',
+                borderBottom: '1px solid var(--border-color)'
             }}>
                 <div style={{
                     display: 'flex',
@@ -43,12 +45,13 @@ export default function GuestLayout() {
                         ☰
                     </button>
 
-                    <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center' }}>
-                        <div style={{ display: 'flex', gap: '20px', marginRight: '20px' }}>
-                            <a href="/" style={{ color: 'var(--text-primary)' }}>{t('nav.home')}</a>
-                            <a href="/#about" style={{ color: 'var(--text-primary)' }}>{t('nav.about')}</a>
-                            <a href="/#contact" style={{ color: 'var(--text-primary)' }}>{t('nav.contact')}</a>
+                    <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                        <div style={{ display: 'flex', gap: '20px' }}>
+                            <Link to="/" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>{t('nav.home')}</Link>
+                            <Link to="/about" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>{t('nav.about')}</Link>
+                            <Link to="/contact" style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>{t('nav.contact')}</Link>
                         </div>
+                        <ThemeToggle />
                         <LanguageSwitcher />
                         <div style={{ display: 'flex', gap: '15px' }}>
                             <Link to="/login" className="btn-logout" style={{ background: 'transparent', border: '1px solid var(--primary-color)', color: 'var(--primary-color)' }}>{t('nav.login')}</Link>
@@ -65,16 +68,16 @@ export default function GuestLayout() {
                         borderTop: '1px solid #eee',
                         marginTop: '1rem'
                     }}>
-                        <a href="/" onClick={() => setIsMenuOpen(false)} style={{ color: 'var(--text-primary)', display: 'block', padding: '0.5rem 0' }}>Home</a>
-                        <a href="/#about" onClick={() => setIsMenuOpen(false)} style={{ color: 'var(--text-primary)', display: 'block', padding: '0.5rem 0' }}>About</a>
-                        <a href="/#contact" onClick={() => setIsMenuOpen(false)} style={{ color: 'var(--text-primary)', display: 'block', padding: '0.5rem 0' }}>Contact</a>
+                        <Link to="/" onClick={() => setIsMenuOpen(false)} style={{ color: 'var(--text-primary)', display: 'block', padding: '0.5rem 0', textDecoration: 'none' }}>{t('nav.home')}</Link>
+                        <Link to="/about" onClick={() => setIsMenuOpen(false)} style={{ color: 'var(--text-primary)', display: 'block', padding: '0.5rem 0', textDecoration: 'none' }}>{t('nav.about')}</Link>
+                        <Link to="/contact" onClick={() => setIsMenuOpen(false)} style={{ color: 'var(--text-primary)', display: 'block', padding: '0.5rem 0', textDecoration: 'none' }}>{t('nav.contact')}</Link>
                         <Link to="/login" onClick={() => setIsMenuOpen(false)} className="btn-logout" style={{
                             background: 'transparent',
                             border: '1px solid var(--primary-color)',
                             color: 'var(--primary-color)',
                             textAlign: 'center',
                             display: 'block'
-                        }}>Login</Link>
+                        }}>{t('nav.login')}</Link>
                     </div>
                 )}
             </nav>

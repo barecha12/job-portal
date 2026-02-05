@@ -11,7 +11,7 @@ export default function Sidebar() {
         <aside>
             <div className="sidebar-header" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '1.5rem' }}>
                 <img src="/images/img.png" alt="Hojio Logo" style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
-                <h2 className="logo-text" style={{ margin: 0, color: 'white', fontSize: '1.5rem', fontWeight: '800', letterSpacing: '-0.02em' }}>Hojio</h2>
+                <h2 className="logo-text" style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.5rem', fontWeight: '800', letterSpacing: '-0.02em' }}>Hojio</h2>
             </div>
             <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>
                 <span>📊</span> <span className="nav-text">{t('nav.dashboard')}</span>
@@ -41,8 +41,8 @@ export default function Sidebar() {
                 <span>👤</span> <span className="nav-text">{t('nav.profile')}</span>
             </Link>
             {role === 'admin' && (
-                <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                    <div style={{ padding: '0 1.5rem 0.5rem', fontSize: '0.75rem', fontWeight: '800', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('nav.administrative')}</div>
+                <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--border-color)' }}>
+                    <div style={{ padding: '0 1.5rem 0.5rem', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('nav.administrative')}</div>
                     <Link to="/admin" className={location.pathname === '/admin' ? 'active' : ''}>
                         <span>🛰️</span> <span className="nav-text">{t('nav.command_center')}</span>
                     </Link>

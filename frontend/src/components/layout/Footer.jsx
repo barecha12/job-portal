@@ -20,10 +20,10 @@ export default function Footer() {
   return (
     <footer
       style={{
-        background:
-          "radial-gradient(1200px 400px at 10% -10%, rgba(59,130,246,0.15), transparent 60%), linear-gradient(180deg, #020617, #0b1222)",
-        color: "#cbd5e1",
+        background: "var(--footer-bg)",
+        color: "var(--text-secondary)",
         padding: "96px 20px 40px",
+        borderTop: "1px solid var(--border-color)"
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -85,8 +85,8 @@ export default function Footer() {
           </FooterColumn>
 
           <FooterColumn title={t('footer.companies') || 'Company'}>
-            <FooterLink to="#about" text={t('footer.about_us')} />
-            <FooterLink to="#contact" text={t('nav.contact')} />
+            <FooterLink to="/about" text={t('footer.about_us')} />
+            <FooterLink to="/contact" text={t('nav.contact')} />
             <FooterLink to="#" text={t('footer.help_center')} />
             <FooterLink to="#" text={t('footer.careers')} />
           </FooterColumn>

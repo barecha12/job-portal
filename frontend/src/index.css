@@ -1,21 +1,23 @@
+/* Light Theme (Default) */
 :root {
-  /* Vibrant Color Palette */
-  --primary-color: #33e0ac;
-  --primary-dark: #2bb88d;
-  --secondary-color: #6366f1;
-  /* Modern Indigo */
+  /* Brand Colors */
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #818cf8;
+  --secondary-color: #8b5cf6;
   --accent-color: #f59e0b;
-  /* Amber */
+
+  /* Background Colors */
   --background-color: #f8fafc;
   --surface-color: #ffffff;
+  --surface-hover: #f1f5f9;
+  --border-color: #e2e8f0;
 
   /* Text Colors */
   --text-primary: #0f172a;
-  /* Slate 900 */
   --text-secondary: #64748b;
-  /* Slate 500 */
   --text-muted: #94a3b8;
-  /* Slate 400 */
+  --text-inverse: #ffffff;
 
   /* Status Colors */
   --error-color: #ef4444;
@@ -23,17 +25,15 @@
   --warning-color: #f59e0b;
   --info-color: #3b82f6;
 
-  /* Glassmorphism & Effects */
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  /* Very subtle white for light glass */
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-
-  /* Sizing & Radius */
-  --border-radius-lg: 24px;
-  --border-radius-md: 16px;
-  --border-radius-sm: 8px;
-  --btn-radius: 50px;
+  /* Component Specific */
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --input-focus: var(--primary-color);
+  --navbar-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --footer-bg: #0f172a;
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -41,11 +41,62 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
+  /* Sizing & Radius */
+  --border-radius-lg: 16px;
+  --border-radius-md: 12px;
+  --border-radius-sm: 8px;
+  --btn-radius: 8px;
+
   /* Typography */
   --font-heading: 'Outfit', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
 
+  /* Transitions */
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  /* Brand Colors - Slightly adjusted for dark mode */
+  --primary-color: #818cf8;
+  --primary-dark: #6366f1;
+  --primary-light: #a5b4fc;
+  --secondary-color: #a78bfa;
+  --accent-color: #fbbf24;
+
+  /* Background Colors */
+  --background-color: #0f172a;
+  --surface-color: #1e293b;
+  --surface-hover: #334155;
+  --border-color: #334155;
+
+  /* Text Colors */
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-inverse: #0f172a;
+
+  /* Status Colors - Adjusted for dark backgrounds */
+  --error-color: #f87171;
+  --success-color: #34d399;
+  --warning-color: #fbbf24;
+  --info-color: #60a5fa;
+
+  /* Component Specific */
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --input-bg: #1e293b;
+  --input-border: #475569;
+  --input-focus: var(--primary-color);
+  --navbar-bg: #1e293b;
+  --sidebar-bg: #1e293b;
+  --footer-bg: #020617;
+
+  /* Shadows - Darker for dark mode */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
 }
 
 * {
@@ -183,15 +234,15 @@ a:hover {
 aside {
   width: 280px;
   min-width: 280px;
-  background-color: #0f172a;
-  /* Sophisticated dark slate */
+  background-color: var(--sidebar-bg);
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   z-index: 100;
-  color: white;
+  color: var(--text-primary);
   transition: var(--transition);
+  border-right: 1px solid var(--border-color);
 }
 
 #defaultLayout.sidebar-collapsed aside {
@@ -244,7 +295,7 @@ aside .sidebar-header h2 {
 aside a {
   padding: 0.875rem 1.25rem;
   border-radius: var(--border-radius-md);
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-weight: 500;
   transition: var(--transition);
   display: flex;
@@ -254,16 +305,16 @@ aside a {
 }
 
 aside a:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: white;
+  background-color: var(--surface-hover);
+  color: var(--text-primary);
   transform: translateX(4px);
 }
 
 aside a.active {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-  color: #0f172a;
+  background: var(--primary-color);
+  color: var(--text-inverse);
   font-weight: 700;
-  box-shadow: 0 10px 15px -3px rgba(51, 224, 172, 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 @media (max-width: 768px) {
@@ -324,7 +375,7 @@ header {
 }
 
 .toggle-btn:hover {
-  background-color: #f1f5f9;
+  background-color: var(--surface-hover);
   color: var(--primary-color);
 }
 
@@ -338,12 +389,12 @@ main {
 
 /* Components */
 .card {
-  background-color: var(--surface-color);
+  background-color: var(--card-bg);
   border-radius: var(--border-radius-lg);
   padding: 2.5rem;
   box-shadow: var(--shadow-md);
   margin-bottom: 2rem;
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--card-border);
   transition: var(--transition);
   overflow: hidden;
   position: relative;
@@ -352,7 +403,7 @@ main {
 .card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-xl);
-  border-color: rgba(51, 224, 172, 0.2);
+  border-color: var(--primary-color);
 }
 
 .login-signup-form {
@@ -387,11 +438,11 @@ textarea {
   width: 100%;
   padding: 0.875rem 1.25rem;
   margin-bottom: 1.25rem;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid var(--input-border);
   border-radius: var(--border-radius-md);
   font-size: 1rem;
   transition: var(--transition);
-  background-color: #f8fafc;
+  background-color: var(--input-bg);
   font-family: inherit;
   color: var(--text-primary);
 }
@@ -400,9 +451,9 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(51, 224, 172, 0.1);
-  background-color: white;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  background-color: var(--input-bg);
 }
 
 label {
@@ -659,6 +710,29 @@ html {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* Scroll Reveal Animations - Gallery Swipe Effect */
+.reveal {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-left {
+  transform: translateX(-100px);
+}
+
+.reveal-right {
+  transform: translateX(100px);
+}
+
+.reveal-up {
+  transform: translateY(50px);
+}
+
+.reveal.active {
+  opacity: 1 !important;
+  transform: translate(0, 0) !important;
 }
 
 /* Gradient Text */
